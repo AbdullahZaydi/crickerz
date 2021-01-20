@@ -1,0 +1,411 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="333dp"
+        android:layout_height="33dp"
+        android:layout_marginTop="5dp"
+        android:background="#C6C6C6"
+        android:backgroundTint="#C6C6C6"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.055">
+
+        <TextView
+            android:layout_width="266dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:text="Economy Rate(min 2 overs)"
+            android:textAlignment="center"
+            android:textColor="@android:color/black"
+            android:textColorHighlight="@android:color/black"
+            android:textColorHint="@android:color/black"
+            android:textColorLink="@android:color/black"
+            android:textSize="18sp" />
+
+        <LinearLayout
+            android:layout_width="66dp"
+            android:layout_height="match_parent"
+            android:background="#279445"
+            android:backgroundTint="#279445">
+
+            <TextView
+                android:layout_width="66dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="15 Pts"
+                android:textAlignment="center"
+                android:textColor="@android:color/black"
+                android:textColorHighlight="@android:color/black"
+                android:textColorHint="@android:color/black"
+                android:textColorLink="@android:color/black"
+                android:textSize="18sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout3"
+        android:layout_width="333dp"
+        android:layout_height="33dp"
+        android:layout_marginTop="5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
+        app:layout_constraintVertical_bias="0.014">
+
+        <TextView
+            android:layout_width="266dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:text="0.1 to 5.0"
+            android:textAlignment="center"
+            android:textColor="@android:color/black"
+            android:textColorHighlight="@android:color/black"
+            android:textColorHint="@android:color/black"
+            android:textColorLink="@android:color/black"
+            android:textSize="18sp" />
+
+        <LinearLayout
+            android:layout_width="66dp"
+            android:layout_height="match_parent"
+            android:background="#279445"
+            android:backgroundTint="#279445">
+
+            <TextView
+                android:layout_width="66dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="15 Pts"
+                android:textAlignment="center"
+                android:textColor="@android:color/black"
+                android:textColorHighlight="@android:color/black"
+                android:textColorHint="@android:color/black"
+                android:textColorLink="@android:color/black"
+                android:textSize="18sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout4"
+        android:layout_width="333dp"
+        android:layout_height="33dp"
+        android:layout_marginTop="5dp"
+        android:background="#C6C6C6"
+        android:backgroundTint="#C6C6C6"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
+        app:layout_constraintVertical_bias="0.014">
+
+        <TextView
+            android:layout_width="266dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:text="5.01 to 8.0"
+            android:textAlignment="center"
+            android:textColor="@android:color/black"
+            android:textColorHighlight="@android:color/black"
+            android:textColorHint="@android:color/black"
+            android:textColorLink="@android:color/black"
+            android:textSize="18sp" />
+
+        <LinearLayout
+            android:layout_width="66dp"
+            android:layout_height="match_parent"
+            android:background="#279445"
+            android:backgroundTint="#279445">
+
+            <TextView
+                android:layout_width="66dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="10 Pts"
+                android:textAlignment="center"
+                android:textColor="@android:color/black"
+                android:textColorHighlight="@android:color/black"
+                android:textColorHint="@android:color/black"
+                android:textColorLink="@android:color/black"
+                android:textSize="18sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout5"
+        android:layout_width="333dp"
+        android:layout_height="33dp"
+        android:layout_marginTop="5dp"
+        android:background="#ffffff"
+        android:backgroundTint="#ffffff"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
+        app:layout_constraintVertical_bias="0.014">
+
+        <TextView
+            android:layout_width="266dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:text="8.01 to 10.0"
+            android:textAlignment="center"
+            android:textColor="@android:color/black"
+            android:textColorHighlight="@android:color/black"
+            android:textColorHint="@android:color/black"
+            android:textColorLink="@android:color/black"
+            android:textSize="18sp" />
+
+        <LinearLayout
+            android:layout_width="66dp"
+            android:layout_height="match_parent"
+            android:background="#279445"
+            android:backgroundTint="#279445">
+
+            <TextView
+                android:layout_width="66dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="5 Pts"
+                android:textAlignment="center"
+                android:textColor="@android:color/black"
+                android:textColorHighlight="@android:color/black"
+                android:textColorHint="@android:color/black"
+                android:textColorLink="@android:color/black"
+                android:textSize="18sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout6"
+        android:layout_width="333dp"
+        android:layout_height="33dp"
+        android:layout_marginTop="5dp"
+        android:background="#C6C6C6"
+        android:backgroundTint="#C6C6C6"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
+        app:layout_constraintVertical_bias="0.014">
+
+        <TextView
+            android:layout_width="266dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:text="10.01 to 12.0"
+            android:textAlignment="center"
+            android:textColor="@android:color/black"
+            android:textColorHighlight="@android:color/black"
+            android:textColorHint="@android:color/black"
+            android:textColorLink="@android:color/black"
+            android:textSize="18sp" />
+
+        <LinearLayout
+            android:layout_width="66dp"
+            android:layout_height="match_parent"
+            android:background="#279445"
+            android:backgroundTint="#279445">
+
+            <TextView
+                android:layout_width="66dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="-10 Pts"
+                android:textAlignment="center"
+                android:textColor="@android:color/black"
+                android:textColorHighlight="@android:color/black"
+                android:textColorHint="@android:color/black"
+                android:textColorLink="@android:color/black"
+                android:textSize="18sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout7"
+        android:layout_width="333dp"
+        android:layout_height="33dp"
+        android:layout_marginTop="5dp"
+        android:background="#ffffff"
+        android:backgroundTint="#ffffff"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
+        app:layout_constraintVertical_bias="0.014">
+
+        <TextView
+            android:layout_width="266dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:text="12.01+"
+            android:textAlignment="center"
+            android:textColor="@android:color/black"
+            android:textColorHighlight="@android:color/black"
+            android:textColorHint="@android:color/black"
+            android:textColorLink="@android:color/black"
+            android:textSize="18sp" />
+
+        <LinearLayout
+            android:layout_width="66dp"
+            android:layout_height="match_parent"
+            android:background="#279445"
+            android:backgroundTint="#279445">
+
+            <TextView
+                android:layout_width="66dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="-15 Pts"
+                android:textAlignment="center"
+                android:textColor="@android:color/black"
+                android:textColorHighlight="@android:color/black"
+                android:textColorHint="@android:color/black"
+                android:textColorLink="@android:color/black"
+                android:textSize="18sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout8"
+        android:layout_width="333dp"
+        android:layout_height="33dp"
+        android:layout_marginTop="5dp"
+        android:background="#C6C6C6"
+        android:backgroundTint="#C6C6C6"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
+        app:layout_constraintVertical_bias="0.014">
+
+        <TextView
+            android:layout_width="266dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:text="Each Wicket"
+            android:textAlignment="center"
+            android:textColor="@android:color/black"
+            android:textColorHighlight="@android:color/black"
+            android:textColorHint="@android:color/black"
+            android:textColorLink="@android:color/black"
+            android:textSize="18sp" />
+
+        <LinearLayout
+            android:layout_width="66dp"
+            android:layout_height="match_parent"
+            android:background="#279445"
+            android:backgroundTint="#279445">
+
+            <TextView
+                android:layout_width="66dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="10 Pts"
+                android:textAlignment="center"
+                android:textColor="@android:color/black"
+                android:textColorHighlight="@android:color/black"
+                android:textColorHint="@android:color/black"
+                android:textColorLink="@android:color/black"
+                android:textSize="18sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout9"
+        android:layout_width="333dp"
+        android:layout_height="33dp"
+        android:layout_marginTop="5dp"
+        android:background="#ffffff"
+        android:backgroundTint="#ffffff"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
+        app:layout_constraintVertical_bias="0.014">
+
+        <TextView
+            android:layout_width="266dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:text="Per Dot Ball Bowled"
+            android:textAlignment="center"
+            android:textColor="@android:color/black"
+            android:textColorHighlight="@android:color/black"
+            android:textColorHint="@android:color/black"
+            android:textColorLink="@android:color/black"
+            android:textSize="18sp" />
+
+        <LinearLayout
+            android:layout_width="66dp"
+            android:layout_height="match_parent"
+            android:background="#279445"
+            android:backgroundTint="#279445">
+
+            <TextView
+                android:layout_width="66dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="1 Pt"
+                android:textAlignment="center"
+                android:textColor="@android:color/black"
+                android:textColorHighlight="@android:color/black"
+                android:textColorHint="@android:color/black"
+                android:textColorLink="@android:color/black"
+                android:textSize="18sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout10"
+        android:layout_width="333dp"
+        android:layout_height="33dp"
+        android:layout_marginTop="5dp"
+        android:background="#C6C6C6"
+        android:backgroundTint="#C6C6C6"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
+        app:layout_constraintVertical_bias="0.014">
+
+        <TextView
+            android:layout_width="266dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:text="Per Maiden over"
+            android:textAlignment="center"
+            android:textColor="@android:color/black"
+            android:textColorHighlight="@android:color/black"
+            android:textColorHint="@android:color/black"
+            android:textColorLink="@android:color/black"
+            android:textSize="18sp" />
+
+        <LinearLayout
+            android:layout_width="66dp"
+            android:layout_height="match_parent"
+            android:background="#279445"
+            android:backgroundTint="#279445">
+
+            <TextView
+                android:layout_width="66dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="20 Pts"
+                android:textAlignment="center"
+                android:textColor="@android:color/black"
+                android:textColorHighlight="@android:color/black"
+                android:textColorHint="@android:color/black"
+                android:textColorLink="@android:color/black"
+                android:textSize="18sp" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>
