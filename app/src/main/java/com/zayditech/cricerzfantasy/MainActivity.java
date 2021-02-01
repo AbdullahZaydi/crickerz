@@ -5,8 +5,11 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Looper;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -27,7 +30,13 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.zayditech.cricerzfantasy.R;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.net.URI;
 
@@ -54,22 +63,14 @@ public class MainActivity extends AppCompatActivity {
         password = findViewById(R.id.password);
         btnSignIn = findViewById(R.id.loginBtn);
         tvSignUp = findViewById(R.id.sign_up_button);
-
-        mAuthStateListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser mFirebaseUser = mAuth.getCurrentUser();
-                if( mFirebaseUser != null ){
-                    Toast.makeText(MainActivity.this,"You are logged in",Toast.LENGTH_SHORT).show();
-//                    Intent i = new Intent(MainActivity.this, HomeActivity.class);
-//                    startActivity(i);
-                }
-                else{
-                    Toast.makeText(MainActivity.this,"Please Login",Toast.LENGTH_SHORT).show();
-                }
-            }
-        };
-
+        FirebaseUser mFirebaseUser = mAuth.getCurrentUser();
+        if( mFirebaseUser != null ){
+            Intent i = new Intent(MainActivity.this, HomeActivity.class);
+            startActivity(i);
+        }
+        else{
+            Toast.makeText(MainActivity.this,"Please Login",Toast.LENGTH_SHORT).show();
+        }
         btnSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -94,9 +95,8 @@ public class MainActivity extends AppCompatActivity {
                                 Toast.makeText(MainActivity.this,"Incorrect Email or Password, Please enter correct credentials",Toast.LENGTH_SHORT).show();
                             }
                             else{
-//                              Intent intToHome = new Intent(MainActivity.this,HomeActivity.class);
-//                              startActivity(intToHome);
                                 startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+                                finish();
                                 Toast.makeText(getApplicationContext(), "Logged In Successfully", Toast.LENGTH_SHORT).show();
                             }
                         }
@@ -189,6 +189,7 @@ public class MainActivity extends AppCompatActivity {
         if(account !=  null){
             String personName = account.getDisplayName();
             startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+            finish();
             Toast.makeText(MainActivity.this,"Signed in as " + personName,Toast.LENGTH_SHORT).show();
         }
     }
