@@ -3,8 +3,10 @@ package com.zayditech.cricerzfantasy;
 import android.content.ClipData;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Looper;
+import android.os.StrictMode;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,10 +21,14 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.zayditech.cricerzfantasy.ui.home.HomeViewModel;
 
+import androidx.annotation.RequiresApi;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -36,6 +42,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Arrays;
+
 public class HomeActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
@@ -44,12 +52,15 @@ public class HomeActivity extends AppCompatActivity {
     FirebaseDatabase database;
     DatabaseReference TeamRef;
     DatabaseReference PlayersRef;
+    DatabaseReference PlayersStatsRef;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
@@ -66,6 +77,7 @@ public class HomeActivity extends AppCompatActivity {
         database = FirebaseDatabase.getInstance();
         TeamRef = database.getReference("Teams");
         PlayersRef = database.getReference("Players");
+        PlayersStatsRef = database.getReference("PlayersStats");
         View headerView = navigationView.getHeaderView(0);
         TextView nav_username = headerView.findViewById(R.id.nav_username);
         TextView nav_email = headerView.findViewById(R.id.nav_email);
@@ -73,8 +85,10 @@ public class HomeActivity extends AppCompatActivity {
                 || mFirebaseUser.getDisplayName().equals("") ? mFirebaseUser.getEmail().split("@")[0]
                 : mFirebaseUser.getDisplayName());
         nav_email.setText(mFirebaseUser.getEmail());
-        API_Data_Fetcher data_fetcher = new API_Data_Fetcher();
-        data_fetcher.execute();
+        if(mFirebaseUser.getEmail().equals("crickerzpsl@gmail.com")) {
+            API_Data_Fetcher data_fetcher = new API_Data_Fetcher();
+            data_fetcher.execute();
+        }
     }
 
     @Override
@@ -129,7 +143,6 @@ public class HomeActivity extends AppCompatActivity {
                         newJson += jsonObject.toString()+ ",";
                     }
                 }
-                System.out.println(newJson);
                 TeamRef.setValue(newJson);
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -139,20 +152,56 @@ public class HomeActivity extends AppCompatActivity {
                 String playerData = gms.hitAPI("https://cricapi.com/api/allPlayers?apikey=JJ8gDRXXaTSizhtuz39mlUnmjJ93");
                 JSONObject json = new JSONObject(playerData);
                 JSONArray jsonArray = json.getJSONArray("data");
-                String newJson = "";
+                JSONArray newJson = new JSONArray();
                 for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject jsonObject = jsonArray.getJSONObject(i);
                     for (String name: gms.playerNames) {
                         if(jsonObject.getString("name").equals(name)) {
-                            newJson += jsonObject.toString() + ",";
+                            newJson.put(jsonObject);
                         }
                     }
                 }
-                System.out.println(newJson);
-                PlayersRef.setValue(newJson);
+                PlayersRef.setValue(newJson.toString());
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+            PlayersRef.addValueEventListener(new ValueEventListener() {
+                @RequiresApi(api = Build.VERSION_CODES.N)
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    String value = dataSnapshot.getValue(String.class);
+                    try {
+                        JSONArray jsonArray = new JSONArray(value);
+                        JSONArray newJson = new JSONArray();
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject jsonObject = jsonArray.getJSONObject(i);
+                            String playerData = gms.hitAPI("https://cricapi.com/api/playerStats?apikey=JJ8gDRXXaTSizhtuz39mlUnmjJ93&pid="+jsonObject.getInt("pid"));
+                            JSONObject response = new JSONObject(playerData);
+                            JSONObject json = new JSONObject();
+                            json.put("pid", response.getString("pid"));
+                            json.put("name", response.getString("fullName"));
+                            json.put("playingRole", response.getString("playingRole"));
+                            json.put("age", response.getString("currentAge"));
+                            json.put("imageURL", response.getString("imageURL"));
+                            json.put("profile", response.getString("profile"));
+                            newJson.put(json);
+
+                            //                            if(response.isNull("playingRole") == false || Arrays.stream(gms.playerNames).anyMatch(jsonObject.getString("name")::equals)) {
+//                            }
+                        }
+                        newJson = gms.removeDuplicatesFromJSON(newJson);
+                        PlayersStatsRef.setValue(newJson.toString());
+                    }
+                    catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError error) {
+                    // Failed to read value
+                }
+            });
             return "";
         }
 

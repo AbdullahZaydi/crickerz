@@ -2,6 +2,7 @@ package com.zayditech.cricerzfantasy;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 
 import com.google.firebase.database.DatabaseReference;
 
@@ -13,6 +14,8 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.HashSet;
+import java.util.Set;
 
 public class GeneralMethods {
     private Context appContext = null;
@@ -35,7 +38,7 @@ public class GeneralMethods {
             "Carlos Brathwaite","Mohammad Rizwan","Sohail Tanvir","Imran Tahir","Sohail Khan","Sohaibullah","Shahnawaz Dhani","Imran Khan"};
     String hitAPI(String urlString) {
         try {
-            URL url = new URL(urlString);//your url i.e fetch data from .
+            URL url = new URL(urlString);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             conn.setRequestProperty("Accept", "application/json");
@@ -54,5 +57,25 @@ public class GeneralMethods {
         } catch (Exception e) {
             return "Exception in NetClientGet:- " + e;
         }
+    }
+    JSONArray removeDuplicatesFromJSON(JSONArray yourJSONArray) throws JSONException {
+        Set<String> stationCodes =new HashSet<String>();
+        JSONArray tempArray=new JSONArray();
+        try {
+            for(int i=0;i<yourJSONArray.length();i++){
+                String  stationCode=yourJSONArray.getJSONObject(i).getString("name");
+                if(stationCodes.contains(stationCode)){
+                    continue;
+                }
+                else {
+                    stationCodes.add(stationCode);
+                    tempArray.put(yourJSONArray.getJSONObject(i));
+                }
+            }
+        }
+        catch (Exception ex) {
+            return new JSONArray("[{\"ex\":"+ex.getCause() + "\n" + ex.getMessage()+"]");
+        }
+        return tempArray;
     }
 }

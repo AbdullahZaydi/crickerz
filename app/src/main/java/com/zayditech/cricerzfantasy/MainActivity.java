@@ -67,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
         if( mFirebaseUser != null ){
             Intent i = new Intent(MainActivity.this, HomeActivity.class);
             startActivity(i);
+            finish();
         }
         else{
             Toast.makeText(MainActivity.this,"Please Login",Toast.LENGTH_SHORT).show();
