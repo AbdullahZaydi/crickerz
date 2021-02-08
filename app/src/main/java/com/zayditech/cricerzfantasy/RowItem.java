@@ -32,4 +32,11 @@ public class RowItem {
     public String toString() {
         return title + "\n" + desc;
     }
+
+    private boolean playerStatus = false;
+    public boolean isPlayerAdded() {return playerStatus;}
+
+    public void togglePlayerStatus(){
+        playerStatus = !playerStatus;
+    }
 }

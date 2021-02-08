@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.smarteist.autoimageslider.SliderViewAdapter;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,23 +49,14 @@ public class SliderAdapter extends
 
     @Override
     public void onBindViewHolder(SliderAdapterVH viewHolder, final int position) {
-
         SliderItem sliderItem = mSliderItems.get(position);
-
         viewHolder.textViewDescription.setText(sliderItem.getDesc());
         viewHolder.textViewDescription.setTextSize(16);
         viewHolder.textViewDescription.setTextColor(Color.WHITE);
-        Glide.with(viewHolder.itemView)
-                .load(sliderItem.getImageURL())
-                .fitCenter()
-                .into(viewHolder.imageViewBackground);
-
-        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(context, "This is item in position " + position, Toast.LENGTH_SHORT).show();
-            }
-        });
+        viewHolder.team1.setText(sliderItem.getTeam1());
+        viewHolder.team2.setText(sliderItem.getTeam2());
+        viewHolder.date.setText(sliderItem.getDate());
+        viewHolder.day.setText(sliderItem.getDay());
     }
 
     @Override
@@ -76,13 +68,19 @@ public class SliderAdapter extends
     class SliderAdapterVH extends SliderViewAdapter.ViewHolder {
 
         View itemView;
-        ImageView imageViewBackground;
         ImageView imageGifContainer;
         TextView textViewDescription;
+        TextView team1;
+        TextView team2;
+        TextView date;
+        TextView day;
 
         public SliderAdapterVH(View itemView) {
             super(itemView);
-            imageViewBackground = itemView.findViewById(R.id.iv_auto_image_slider);
+            team1 = itemView.findViewById(R.id.team1);
+            team2 = itemView.findViewById(R.id.team2);
+            date = itemView.findViewById(R.id.date);
+            day = itemView.findViewById(R.id.day);
             imageGifContainer = itemView.findViewById(R.id.iv_gif_container);
             textViewDescription = itemView.findViewById(R.id.tv_auto_image_slider);
             this.itemView = itemView;

@@ -16,5 +16,10 @@
             android:id="@+id/nav_slideshow"
             android:icon="@drawable/pt_calc_icon"
             android:title="Point Calculation" />
+
+        <item
+            android:id="@+id/nav_yourTeam"
+            android:icon="@drawable/player"
+            android:title="My Team" />
     </group>
 </menu>

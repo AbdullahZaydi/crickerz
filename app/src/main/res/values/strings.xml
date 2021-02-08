@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">CricerzFantasy</string>
+    <string name="app_name">Cricerz Fantasy</string>
     <string name="title_activity_home">HomeActivity</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -11,5 +11,8 @@
     <string name="menu_home">Home</string>
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
-    <string name="image">@drawable/ic_home</string>
+    <string name="image">ic_home</string>
+    <string name="title_activity_create_team">CreateTeamActivity</string>
+    <string name="tab_text_1">Tab 1</string>
+    <string name="tab_text_2">Tab 2</string>
 </resources>

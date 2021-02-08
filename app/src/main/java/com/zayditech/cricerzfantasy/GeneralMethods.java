@@ -3,9 +3,14 @@ package com.zayditech.cricerzfantasy;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
 
 import com.google.firebase.database.DatabaseReference;
 
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -77,5 +82,18 @@ public class GeneralMethods {
             return new JSONArray("[{\"ex\":"+ex.getCause() + "\n" + ex.getMessage()+"]");
         }
         return tempArray;
+    }
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public String encodeIntoBase64(String dataToEncode) {
+        final byte[] authBytes = dataToEncode.getBytes(StandardCharsets.UTF_8);
+        final String encoded = Base64.getEncoder().encodeToString(authBytes);
+        return  encoded;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    String decodeData(String dataToDecode) {
+        // Decoding string
+        String dStr = new String(Base64.getDecoder().decode(dataToDecode));
+        return dStr;
     }
 }

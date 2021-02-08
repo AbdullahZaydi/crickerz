@@ -119,7 +119,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
+        TextView skipButton = findViewById(R.id.skipBtn);
+        skipButton.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), HomeActivity.class)));
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()

@@ -10,10 +10,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CricerzFantasy">
         <activity
+            android:name=".CreateTeamActivity"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
             android:name=".HomeActivity"
-            android:screenOrientation="portrait"
             android:label="@string/title_activity_home"
-            android:theme="@style/Theme.CricerzFantasy.NoActionBar"></activity>
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.CricerzFantasy.NoActionBar" />
         <activity android:name=".SignUpActivity" />
         <activity
             android:name=".MainActivity"

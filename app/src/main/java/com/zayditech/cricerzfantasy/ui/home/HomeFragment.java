@@ -1,34 +1,35 @@
 package com.zayditech.cricerzfantasy.ui.home;
 
-import android.graphics.Color;
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.google.android.material.card.MaterialCardView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType;
 import com.smarteist.autoimageslider.SliderAnimations;
 import com.smarteist.autoimageslider.SliderView;
+import com.zayditech.cricerzfantasy.CreateTeamActivity;
 import com.zayditech.cricerzfantasy.CustomListViewAdapter;
+import com.zayditech.cricerzfantasy.GeneralMethods;
+import com.zayditech.cricerzfantasy.MainActivity;
 import com.zayditech.cricerzfantasy.R;
 import com.zayditech.cricerzfantasy.RowItem;
 import com.zayditech.cricerzfantasy.SliderAdapter;
@@ -38,24 +39,19 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class HomeFragment extends Fragment {
 
     private HomeViewModel homeViewModel;
-    public static final String[] titles = new String[] { "Strawberry",
-            "Banana", "Orange", "Mixed", "Sample Data", "Sample Data 2" };
     private FirebaseDatabase database;
     private DatabaseReference PlayersStatsRef;
-    public static final String[] descriptions = new String[] {
-            "It is an aggregate accessory fruit",
-            "It is the largest herbaceous flowering plant", "Citrus Fruit",
-            "Mixed Fruits", "Sample" , "Sample" };
-
-    public static final Integer[] images = { R.drawable.home_icon,
-            R.drawable.mobile_icon, R.drawable.arrow_down, R.drawable.ic_menu_gallery, R.drawable.ic_menu_gallery, R.drawable.ic_menu_gallery };
-
+    private DatabaseReference Teams;
+    DatabaseReference CreatedTeamRef;
     ListView listView;
     List<RowItem> rowItems;
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -65,7 +61,27 @@ public class HomeFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_home, container, false);
         database = FirebaseDatabase.getInstance();
         PlayersStatsRef = database.getReference("PlayersStats");
+        Teams = database.getReference("Teams");
         rowItems = new ArrayList<RowItem>();
+        GeneralMethods gms = new GeneralMethods(getContext());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            if(FirebaseAuth.getInstance().getCurrentUser() != null) {
+                CreatedTeamRef = database.getReference(gms.encodeIntoBase64(FirebaseAuth.getInstance().getCurrentUser().getEmail()));
+            }
+        }
+        MaterialCardView card = root.findViewById(R.id.createTeamCard);
+        card.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(FirebaseAuth.getInstance().getCurrentUser() != null) {
+                    startActivity(new Intent(getActivity().getApplicationContext(), CreateTeamActivity.class));
+                }
+                else {
+                    startActivity(new Intent(getActivity().getApplicationContext(), MainActivity.class));
+                    Toast.makeText(getContext(), "Please Login First", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
         PlayersStatsRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -89,11 +105,11 @@ public class HomeFragment extends Fragment {
                 listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        Toast toast = Toast.makeText(getActivity().getApplicationContext(),
-                                "Item " + (position + 1) + ": " + rowItems.get(position),
-                                Toast.LENGTH_SHORT);
-                        toast.setGravity(Gravity.BOTTOM|Gravity.CENTER_HORIZONTAL, 0, 0);
-                        toast.show();
+//                        Toast toast = Toast.makeText(getActivity().getApplicationContext(),
+//                                "Item " + (position + 1) + ": " + rowItems.get(position),
+//                                Toast.LENGTH_SHORT);
+//                        toast.setGravity(Gravity.BOTTOM|Gravity.CENTER_HORIZONTAL, 0, 0);
+//                        toast.show();
                     }
                 });
 //                for (int i = 0; i < titles.length; i++) {
@@ -108,29 +124,70 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        SliderView sliderView = root.findViewById(R.id.imageSlider);
+        Teams.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String value = dataSnapshot.getValue(String.class);
+                SliderView sliderView = root.findViewById(R.id.imageSlider);
+                SliderAdapter adapter = new SliderAdapter(getActivity().getApplicationContext());
+                try {
+                    JSONArray jsonArray = new JSONArray(value);
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject json = jsonArray.getJSONObject(i);
+                        String dateStr = json.getString("dateTimeGMT").split("T")[0].replace("-", "/");
+                        Date date = new SimpleDateFormat("dd/MM/yyyy").parse(dateStr);
+                        String day = (String) android.text.format.DateFormat.format("EEEE", date);
+                        SliderItem sliderItem1 = new SliderItem(
+                                json.getString("team-1"),
+                                json.getString("team-2"),
+                                dateStr,
+                                day,
+                                "No Text");
+                        adapter.addItem(sliderItem1);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                sliderView.setSliderAdapter(adapter);
+//        sliderView.setIndicatorAnimation(IndicatorAnimationType.WORM); //set indicator animation by using IndicatorAnimationType. :WORM or THIN_WORM or COLOR or DROP or FILL or NONE or SCALE or SCALE_DOWN or SLIDE and SWAP!!
+                sliderView.setSliderTransformAnimation(SliderAnimations.SIMPLETRANSFORMATION);
+                sliderView.setAutoCycleDirection(SliderView.AUTO_CYCLE_DIRECTION_BACK_AND_FORTH);
+//        sliderView.setIndicatorSelectedColor(Color.WHITE);
+//        sliderView.setIndicatorUnselectedColor(Color.GRAY);
+                sliderView.setScrollTimeInSec(4); //set scroll delay in seconds :
+                sliderView.startAutoCycle();
+            }
 
-        SliderAdapter adapter = new SliderAdapter(getActivity().getApplicationContext());
-        SliderItem newItem1 = new SliderItem("https://img2.pngio.com/index-of-assets-front-psl-assets-images-karachi-kings-png-374_287.png", "Karachi Kings");
-        SliderItem newItem2 = new SliderItem("https://www.brandsynario.com/wp-content/uploads/lead-10.jpg", "Lahore Qalandars");
-        SliderItem newItem3 = new SliderItem("https://www.brandsynario.com/wp-content/uploads/ISLAMABAD-UNITED-LOGO.jpg", "Islamabad United");
-        SliderItem newItem4 = new SliderItem("https://i.pinimg.com/originals/b7/4e/81/b74e8108e7ab69bd05793156c2158a5b.jpg", "Multan Sultans");
-        SliderItem newItem5 = new SliderItem("https://www.brandsynario.com/wp-content/uploads/lead-quetta-gladiators.jpg", "Quetta Gladiators");
-        SliderItem newItem6 = new SliderItem("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSzrK8dV9wixvirUWxMtDnoQaJfWYD46d2ZSw&usqp=CAU", "Pehsawar Zalmi");
-        adapter.addItem(newItem1);
-        adapter.addItem(newItem2);
-        adapter.addItem(newItem3);
-        adapter.addItem(newItem4);
-        adapter.addItem(newItem5);
-        sliderView.setSliderAdapter(adapter);
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+            }
+        });
 
-        sliderView.setIndicatorAnimation(IndicatorAnimationType.WORM); //set indicator animation by using IndicatorAnimationType. :WORM or THIN_WORM or COLOR or DROP or FILL or NONE or SCALE or SCALE_DOWN or SLIDE and SWAP!!
-        sliderView.setSliderTransformAnimation(SliderAnimations.SIMPLETRANSFORMATION);
-        sliderView.setAutoCycleDirection(SliderView.AUTO_CYCLE_DIRECTION_BACK_AND_FORTH);
-        sliderView.setIndicatorSelectedColor(Color.WHITE);
-        sliderView.setIndicatorUnselectedColor(Color.GRAY);
-        sliderView.setScrollTimeInSec(4); //set scroll delay in seconds :
-        sliderView.startAutoCycle();
+        if(FirebaseAuth.getInstance().getCurrentUser() != null) {
+            CreatedTeamRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    // This method is called once with the initial value and again
+                    // whenever data at this location is updated.
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                        String encoded = gms.encodeIntoBase64(FirebaseAuth.getInstance().getCurrentUser().getEmail());
+                    }
+                    String value = dataSnapshot.getValue(String.class);
+                    if(!(value == null)) {
+                        TextView createText = container.findViewById(R.id.createText);
+                        createText.setText("Change Team");
+                        TextView supportingText = container.findViewById(R.id.supportingText);
+                        supportingText.setText("Modify Your Team\nYou can modify your team\nAs much as you can\nUntil new psl has started");
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError error) {
+                    // Failed to read value
+                }
+            });
+        }
         return root;
     }
 }
