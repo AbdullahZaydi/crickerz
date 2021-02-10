@@ -2,6 +2,7 @@ package com.zayditech.cricerzfantasy;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.PorterDuff;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -12,6 +13,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -21,10 +31,12 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TeamListAdapter extends ArrayAdapter<PlayerList> {
+import static android.content.Context.MODE_PRIVATE;
+
+public class TeamListAdapter extends ArrayAdapter<TeamList> {
 
     Context context;
-    List<PlayerList> rowItems;
+    List<TeamList> rowItems;
     String value;
     ArrayList playerData;
     JSONArray team;
@@ -34,9 +46,12 @@ public class TeamListAdapter extends ArrayAdapter<PlayerList> {
     int allRounderLength = 0;
     int bowlerLength = 0;
     int budget = 100;
-
+    int oldPos = -1;
+    int playerCount = 1;
+    private DatabaseReference teamRef;
+    private GeneralMethods gms;
     public TeamListAdapter(Context context, int resourceId,
-                           List<PlayerList> items, String value, Tab1Fragment.SendMessage _sm) {
+                           List<TeamList> items, String value, Tab1Fragment.SendMessage _sm) {
         super(context, resourceId, items);
         this.context = context;
         this.rowItems = items;
@@ -44,6 +59,8 @@ public class TeamListAdapter extends ArrayAdapter<PlayerList> {
         this.SM = _sm;
         playerData = new ArrayList();
         team = new JSONArray();
+        gms = new GeneralMethods(context);
+        teamRef = FirebaseDatabase.getInstance().getReference(gms.encodeIntoBase64(FirebaseAuth.getInstance().getCurrentUser().getEmail()));
     }
 
     /*private view holder class*/
@@ -54,10 +71,11 @@ public class TeamListAdapter extends ArrayAdapter<PlayerList> {
         ImageView addBtn;
         TextView value;
     }
+    int count = 0;
 
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder = null;
-        PlayerList rowItem = getItem(position);
+        TeamList rowItem = getItem(position);
 
         LayoutInflater mInflater = (LayoutInflater) context
                 .getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
@@ -78,12 +96,14 @@ public class TeamListAdapter extends ArrayAdapter<PlayerList> {
             || rowItem.getDesc().equals("") ? "Unknown" : rowItem.getDesc());
         holder.txtTitle.setText(rowItem.getTitle());
         holder.value.setText(String.valueOf(rowItem.getValue()));
+
         if(rowItem.getImageId().equals(null) || rowItem.getImageId().equals("")) {
             holder.imageView.setImageResource(R.drawable.cricerzlogo);
         }
         else {
             Picasso.get().load(rowItem.getImageId()).into(holder.imageView);
         }
+
         View finalConvertView = convertView;
         holder.addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -204,10 +224,10 @@ public class TeamListAdapter extends ArrayAdapter<PlayerList> {
                                 for (int j = 0; j < team.length(); j++) {
                                     JSONObject newJsonObject = team.getJSONObject(j);
                                     if(newJsonObject.getString("name").equals(rowItems.get(position).getTitle())) {
+                                        budget += newJsonObject.getInt("value");
+                                        mOnBudgetChangeListener.onBudgetChanged(budget);
                                         team.remove(j);
                                         playerData.remove(rowItems.get(position).getTitle());
-                                        budget += jsonObject.getInt("value");
-                                        mOnBudgetChangeListener.onBudgetChanged(budget);
                                         rowItems.get(position).togglePlayerStatus();
                                         notifyDataSetChanged();
                                         if(newJsonObject.getString("playingRole").equals("Wicket Keeper")) {
@@ -258,7 +278,49 @@ public class TeamListAdapter extends ArrayAdapter<PlayerList> {
                 }
             }
         });
+        if(!rowItem.isPlayerAdded() && playerCount <= 11) {
+            teamRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String value = snapshot.getValue(String.class);
+                if(value != null) {
+                    try {
+                        JSONArray jsonArray = new JSONArray(value);
+                        int indexOfArr = gms.findInJSONArray(jsonArray, rowItem.getTitle());
+                        if(indexOfArr != -1 && oldPos != getPosition(rowItem)) {
+                            JSONObject jsonObject = jsonArray.getJSONObject(indexOfArr);
+                            JSONObject jsonObj = new JSONObject();
+                            jsonObj.put("pid",jsonObject.getInt("pid"));
+                            jsonObj.put("name",jsonObject.getString("name"));
+                            jsonObj.put("imageURL",jsonObject.getString("imageURL"));
+                            jsonObj.put("playingRole", jsonObject.getString("playingRole"));
+                            jsonObj.put("value", jsonObject.getString("value"));
+                            playerData.add(rowItem.getTitle());
+                            team.put(jsonObj);
+                            budget = budget - jsonObject.getInt("value");
+                            mOnBudgetChangeListener.onBudgetChanged(budget);
+                            oldPos = getPosition(rowItem);
+                            SM.sendData(team.toString());
+                            rowItems.get(getPosition(rowItem)).togglePlayerStatus();
+                            notifyDataSetChanged();
+                            playerCount++;
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        }
+
+
         holder.addBtn.setTag(position);
+
         ImageView btn = (ImageView) finalConvertView.findViewById(R.id.addBtn);
         if(rowItems.get(position).isPlayerAdded()) {
             btn.setImageResource(R.drawable.remove);

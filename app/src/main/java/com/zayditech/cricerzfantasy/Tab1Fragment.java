@@ -38,13 +38,13 @@ public class Tab1Fragment extends Fragment {
     SendMessage SM;
     onTabChangeClickListener TabChangedListener;
     ListView listView;
-    List<PlayerList> rowItems;
+    List<TeamList> rowItems;
     JSONArray playersArray;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         database = FirebaseDatabase.getInstance();
         PlayersStatsRef = database.getReference("PlayersStats");
-        rowItems = new ArrayList<PlayerList>();
+        rowItems = new ArrayList<TeamList>();
         playersArray = new JSONArray();
         PlayersStatsRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -54,9 +54,9 @@ public class Tab1Fragment extends Fragment {
                     JSONArray jsonArray = new JSONArray(value);
                     for (int i = 0; i < jsonArray.length(); i++) {
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
-                        PlayerList item = new PlayerList(jsonObject.getString("imageURL"),
+                        TeamList item = new TeamList(jsonObject.getString("imageURL"),
                                 jsonObject.getString("name"),
-                                jsonObject.getString("playingRole"), jsonObject.getInt("value"));
+                                jsonObject.getString("playingRole"), jsonObject.getInt("value"), false);
                         rowItems.add(item);
                     }
                 } catch (JSONException e) {

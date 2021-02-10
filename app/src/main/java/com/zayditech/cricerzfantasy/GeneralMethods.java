@@ -96,4 +96,47 @@ public class GeneralMethods {
         String dStr = new String(Base64.getDecoder().decode(dataToDecode));
         return dStr;
     }
+
+    JSONArray updateJsonArray(JSONArray jsonArray, JSONObject updatedObject) throws JSONException {
+        JSONArray tempArray = new JSONArray();
+        for (int i = 0; i < jsonArray.length(); i++) {
+            JSONObject jsonObject = jsonArray.getJSONObject(i);
+            if(jsonObject.equals(updatedObject)) {
+                tempArray.put(updatedObject);
+            }
+            else {
+                tempArray.put(jsonObject);
+            }
+        }
+        return tempArray;
+    }
+
+    int findInJSONArray(JSONArray jsonArray, String Title) throws JSONException {
+        for (int i = 0; i < jsonArray.length(); i++) {
+            JSONObject jsonObject = jsonArray.getJSONObject(i);
+            if(jsonObject.getString("name").equals(Title)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    JSONArray compareAndAddToArray(JSONArray jsonArray, JSONArray arr) throws JSONException {
+        JSONArray tempArr = new JSONArray();
+        for (int i = 0; i < arr.length(); i++) {
+            JSONObject comparingObj = arr.getJSONObject(i);
+            for (int j = 0; j < jsonArray.length(); j++) {
+                JSONObject objToCompareWith = jsonArray.getJSONObject(j);
+                if(objToCompareWith.getString("pid").equals(comparingObj.getString("pid"))) {
+                    JSONObject tempObj = objToCompareWith;
+                    tempObj.put("isSelected", true);
+                    tempArr.put(tempObj);
+                }
+                else {
+                    tempArr.put(objToCompareWith);
+                }
+            }
+        }
+        return tempArr;
+    }
 }

@@ -96,7 +96,7 @@ public class Tab2Fragment extends Fragment {
             e.printStackTrace();
         }
         CreateTeamAdapter adapter = new CreateTeamAdapter(getActivity().getApplicationContext(),
-                R.layout.list_item_3, rowItems, message);
+                R.layout.list_item_4, rowItems, message);
         listView.setAdapter(adapter);
     }
 }
