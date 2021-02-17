@@ -45,6 +45,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import cn.iwgang.countdownview.CountdownView;
+
 public class HomeFragment extends Fragment {
 
     private HomeViewModel homeViewModel;
@@ -145,6 +147,8 @@ public class HomeFragment extends Fragment {
                                 "No Text");
                         adapter.addItem(sliderItem1);
                     }
+
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -187,6 +191,24 @@ public class HomeFragment extends Fragment {
                     // Failed to read value
                 }
             });
+        }
+        CountdownView mCvCountdownView = root.findViewById(R.id.mycountdown);
+
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+        String countDate = "20-02-2021 14:00:00";
+        Date now = new Date();
+
+
+        try {
+            //Formatting from String to Date
+            Date date = sdf.parse(countDate);
+            long currentTime = now.getTime();
+            long newYearDate = date.getTime();
+            long countDownToNewYear = newYearDate - currentTime;
+            mCvCountdownView.start(countDownToNewYear);
+
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
         return root;
     }

@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Window;
 import android.view.WindowManager;
@@ -20,6 +21,8 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class CreateTeamActivity extends AppCompatActivity  implements Tab1Fragment.SendMessage, Tab1Fragment.onTabChangeClickListener {
     private TabAdapter adapter;
     private TabLayout tabLayout;
@@ -34,29 +37,54 @@ public class CreateTeamActivity extends AppCompatActivity  implements Tab1Fragme
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_create_team);
         this.getSupportActionBar().hide();
+        String teamToShow = getIntent().getStringExtra("TeamName") == null ?
+                "All" : getIntent().getStringExtra("TeamName");
         GeneralMethods gms = new GeneralMethods(getApplicationContext());
         teamRef = FirebaseDatabase.getInstance().getReference(gms.encodeIntoBase64(FirebaseAuth.getInstance().getCurrentUser().getEmail()));
         viewPager = (ViewPager) findViewById(R.id.viewPager);
         tabLayout = (TabLayout) findViewById(R.id.tabLayout);
-        adapter = new TabAdapter(getSupportFragmentManager());
+        adapter = new TabAdapter(getSupportFragmentManager(), teamToShow);
         adapter.addFragment(new Tab1Fragment(), "Select Players");
         adapter.addFragment(new Tab2Fragment(), "Create Team");
         viewPager.setAdapter(adapter);
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
         tabLayout.setupWithViewPager(viewPager);
+        CircleImageView kk_image = findViewById(R.id.ic_kk);
+        CircleImageView lq_image = findViewById(R.id.ic_lq);
+        CircleImageView pz_image = findViewById(R.id.ic_pz);
+        CircleImageView ms_image = findViewById(R.id.ic_ms);
+        CircleImageView iu_image = findViewById(R.id.ic_iu);
+        CircleImageView qg_image = findViewById(R.id.ic_qg);
+
+//        kk_image.setOnClickListener(v -> {
+//            startActivity(new Intent(getApplicationContext(), CreateTeamActivity.class).putExtra("TeamName", "KK"));
+//            finish();
+//        });
+//
+//        lq_image.setOnClickListener(v -> {
+//            startActivity(new Intent(getApplicationContext(), CreateTeamActivity.class).putExtra("TeamName", "LQ"));
+//            finish();
+//        });
+//
+//        pz_image.setOnClickListener(v -> {
+//            startActivity(new Intent(getApplicationContext(), CreateTeamActivity.class).putExtra("TeamName", "PZ"));
+//            finish();
+//        });
+//
+//        ms_image.setOnClickListener(v -> {
+//            startActivity(new Intent(getApplicationContext(), CreateTeamActivity.class).putExtra("TeamName", "MS"));
+//            finish();
+//        });
+//
+//        iu_image.setOnClickListener(v -> {
+//            startActivity(new Intent(getApplicationContext(), CreateTeamActivity.class).putExtra("TeamName", "IU"));
+//            finish();
+//        });
+//
+//        qg_image.setOnClickListener(v -> {
+//            startActivity(new Intent(getApplicationContext(), CreateTeamActivity.class).putExtra("TeamName", "QG"));
+//            finish();
+//        });
+
         teamRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {

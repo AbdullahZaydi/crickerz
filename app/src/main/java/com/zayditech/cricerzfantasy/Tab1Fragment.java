@@ -46,6 +46,8 @@ public class Tab1Fragment extends Fragment {
         PlayersStatsRef = database.getReference("PlayersStats");
         rowItems = new ArrayList<TeamList>();
         playersArray = new JSONArray();
+        Bundle bundle = getArguments();
+        String teamToShow = bundle.getString("TeamToShow", "All");
         PlayersStatsRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -54,10 +56,20 @@ public class Tab1Fragment extends Fragment {
                     JSONArray jsonArray = new JSONArray(value);
                     for (int i = 0; i < jsonArray.length(); i++) {
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
-                        TeamList item = new TeamList(jsonObject.getString("imageURL"),
+                        if(teamToShow.equals("All")) {
+                            TeamList item = new TeamList(jsonObject.getString("imageURL"),
+                            jsonObject.getString("name"),
+                            jsonObject.getString("playingRole"), jsonObject.getInt("value"), false);
+                            rowItems.add(item);
+                        }
+                        else {
+                            if(jsonObject.getString("team").equals(teamToShow)) {
+                                TeamList item = new TeamList(jsonObject.getString("imageURL"),
                                 jsonObject.getString("name"),
                                 jsonObject.getString("playingRole"), jsonObject.getInt("value"), false);
-                        rowItems.add(item);
+                                rowItems.add(item);
+                            }
+                        }
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

@@ -30,6 +30,7 @@ public class CreateTeamAdapter extends ArrayAdapter<PlayerList> {
     ArrayList playerData;
     JSONArray team;
     boolean isCaptainSelected = false;
+    String selectedCaptain = "";
     public CreateTeamAdapter(Context context, int resourceId,
                              List<PlayerList> items, String value) {
         super(context, resourceId, items);
@@ -89,7 +90,7 @@ public class CreateTeamAdapter extends ArrayAdapter<PlayerList> {
                 JSONArray jsonArray = new JSONArray(value);
                 for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject jsonObject = jsonArray.getJSONObject(i);
-                    if(isCaptainSelected && !(jsonObject.getString("name").equals(rowItems.get(position1).getTitle()))) {
+                    if(isCaptainSelected && !(selectedCaptain.equals(rowItems.get(position1).getTitle()))) {
                         TastyToast.error(getContext(),"You've already selected captain!",
                                 TastyToast.LENGTH_SHORT,
                                 TastyToast.SHAPE_RECTANGLE,
@@ -101,10 +102,12 @@ public class CreateTeamAdapter extends ArrayAdapter<PlayerList> {
                         if(!rowItems.get(position1).isPlayerAdded()) {
                             jsonObject.put("captain", true);
                             isCaptainSelected = true;
+                            selectedCaptain = jsonObject.getString("name");
                         }
                         else {
                             jsonObject.remove("captain");
                             isCaptainSelected = false;
+                            selectedCaptain = "";
                         }
                         rowItems.get(position1).togglePlayerStatus();
                         notifyDataSetChanged();
@@ -120,7 +123,7 @@ public class CreateTeamAdapter extends ArrayAdapter<PlayerList> {
         holder.addBtn.setTag(position);
         ImageView btn = (ImageView) finalConvertView.findViewById(R.id.addBtn);
         if(rowItems.get(position).isPlayerAdded()) {
-            btn.setImageResource(R.drawable.remove);
+            btn.setImageResource(R.drawable.selected_captain);
         }
         else {
             btn.setImageResource(R.drawable.captain);

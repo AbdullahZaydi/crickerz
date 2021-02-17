@@ -7,6 +7,63 @@
     <include layout="@layout/app_bar" />
 
     <com.google.android.material.card.MaterialCardView
+        android:id="@+id/teamCard"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="#279445"
+        android:elevation="10dp"
+        app:cardBackgroundColor="#279445"
+        app:cardMaxElevation="100dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_height="44dp">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/ic_kk"
+                android:layout_width="56dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="3dp"
+                android:src="@drawable/karachi_kings" />
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/ic_lq"
+                android:layout_width="56dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="3dp"
+                android:src="@drawable/lahore_qalandars" />
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/ic_pz"
+                android:layout_width="56dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="3dp"
+                android:src="@drawable/peshawar_zalmi" />
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/ic_qg"
+                android:layout_width="56dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="3dp"
+                android:src="@drawable/quetta_gladiators" />
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/ic_ms"
+                android:layout_width="56dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="3dp"
+                android:src="@drawable/multan_sultans" />
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/ic_iu"
+                android:layout_width="56dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="3dp"
+                android:src="@drawable/islamabad_united" />
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+    <com.google.android.material.card.MaterialCardView
         android:id="@+id/createTeamCard"
         android:layout_width="match_parent"
         android:layout_height="66dp"

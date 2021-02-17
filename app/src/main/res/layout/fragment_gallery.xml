@@ -5,4 +5,188 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/stadium_bg"
-    tools:context=".ui.gallery.GalleryFragment"/>
+    tools:context=".ui.gallery.GalleryFragment">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/createTeamCard"
+        android:layout_width="313dp"
+        android:layout_height="519dp"
+        android:layout_margin="8dp"
+        android:elevation="10dp"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="10dp"
+        app:cardMaxElevation="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.433">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/content"
+                        android:layout_width="312dp"
+                        android:layout_height="25dp"
+                        android:fontFamily="sans-serif-black"
+                        android:includeFontPadding="true"
+                        android:text="How It Works"
+                        android:textAlignment="center"
+                        android:textAllCaps="true"
+                        android:textColor="@android:color/black"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.497"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.032" />
+
+                    <LinearLayout
+                        android:id="@+id/linearLayout11"
+                        android:layout_width="254dp"
+                        android:layout_height="389dp"
+                        android:orientation="vertical"
+                        android:layout_marginTop="20dp"
+                        app:layout_constraintBottom_toBottomOf="@+id/content_howItWorks_footer"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.491"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.506">
+
+                        <TextView
+                            android:id="@+id/content_howItWorks_1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="1. Click the Create team menu and choose 11 players from the given PSL team players."
+                            android:textAlignment="textStart"
+                            android:textColor="#000000" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="2dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginBottom="8dp"
+                            android:background="#bfbfbf" />
+
+                        <TextView
+                            android:id="@+id/content_howItWorks_2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="2. Select the Captain from My team option. Captain will be shown by a Green icon."
+                            android:textAlignment="textStart"
+                            android:textColor="#000000" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="2dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginBottom="8dp"
+                            android:background="#bfbfbf" />
+
+                        <TextView
+                            android:id="@+id/content_howItWorks_3"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="3. Save the team by clicking save button on bottom."
+                            android:textAlignment="textStart"
+                            android:textColor="#000000" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="2dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginBottom="8dp"
+                            android:background="#bfbfbf" />
+
+                        <TextView
+                            android:id="@+id/content_howItWorks_4"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="4. Every user will be given 90 transfers for Whole PSL Matches. Teams will be locked down 30 mints before match."
+                            android:textAlignment="textStart"
+                            android:textColor="#000000" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="2dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginBottom="8dp"
+                            android:background="#bfbfbf" />
+
+                        <TextView
+                            android:id="@+id/content_howItWorks_5"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="5. On a Day when double header will be player you can change team only once before the first match and that team will be considered for both matches."
+                            android:textAlignment="textStart"
+                            android:textColor="#000000" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="2dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginBottom="8dp"
+                            android:background="#bfbfbf" />
+
+                        <TextView
+                            android:id="@+id/content_howItWorks_6"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="6.Leader board option will show the top players from whole league."
+                            android:textAlignment="textStart"
+                            android:textColor="#000000" />
+                    </LinearLayout>
+
+
+                    <TextView
+                        android:id="@+id/content_howItWorks_footer"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=" Support Us On Twitter and Facebook."
+                        android:textAlignment="center"
+                        android:textColor="#000000"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.493"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.916" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="35dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="1.0">
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:id="@+id/ic_twitter"
+                            android:layout_width="42dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="start"
+                            android:src="@drawable/twitter" />
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:id="@+id/ic_instagram"
+                            android:layout_width="42dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:src="@drawable/instagram" />
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:id="@+id/ic_facebook"
+                            android:layout_width="39dp"
+                            android:layout_height="33dp"
+                            android:layout_gravity="center"
+                            android:src="@drawable/facebook" />
+                    </LinearLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
+</androidx.constraintlayout.widget.ConstraintLayout>
