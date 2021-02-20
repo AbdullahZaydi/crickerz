@@ -48,42 +48,6 @@ public class CreateTeamActivity extends AppCompatActivity  implements Tab1Fragme
         adapter.addFragment(new Tab2Fragment(), "Create Team");
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
-        CircleImageView kk_image = findViewById(R.id.ic_kk);
-        CircleImageView lq_image = findViewById(R.id.ic_lq);
-        CircleImageView pz_image = findViewById(R.id.ic_pz);
-        CircleImageView ms_image = findViewById(R.id.ic_ms);
-        CircleImageView iu_image = findViewById(R.id.ic_iu);
-        CircleImageView qg_image = findViewById(R.id.ic_qg);
-
-//        kk_image.setOnClickListener(v -> {
-//            startActivity(new Intent(getApplicationContext(), CreateTeamActivity.class).putExtra("TeamName", "KK"));
-//            finish();
-//        });
-//
-//        lq_image.setOnClickListener(v -> {
-//            startActivity(new Intent(getApplicationContext(), CreateTeamActivity.class).putExtra("TeamName", "LQ"));
-//            finish();
-//        });
-//
-//        pz_image.setOnClickListener(v -> {
-//            startActivity(new Intent(getApplicationContext(), CreateTeamActivity.class).putExtra("TeamName", "PZ"));
-//            finish();
-//        });
-//
-//        ms_image.setOnClickListener(v -> {
-//            startActivity(new Intent(getApplicationContext(), CreateTeamActivity.class).putExtra("TeamName", "MS"));
-//            finish();
-//        });
-//
-//        iu_image.setOnClickListener(v -> {
-//            startActivity(new Intent(getApplicationContext(), CreateTeamActivity.class).putExtra("TeamName", "IU"));
-//            finish();
-//        });
-//
-//        qg_image.setOnClickListener(v -> {
-//            startActivity(new Intent(getApplicationContext(), CreateTeamActivity.class).putExtra("TeamName", "QG"));
-//            finish();
-//        });
 
         teamRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

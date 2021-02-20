@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static android.content.Context.MODE_PRIVATE;
+import static android.content.Context.POWER_SERVICE;
 
 public class TeamListAdapter extends ArrayAdapter<TeamList> {
 
@@ -48,6 +49,8 @@ public class TeamListAdapter extends ArrayAdapter<TeamList> {
     int budget = 100;
     int oldPos = -1;
     int playerCount = 1;
+    int totalLength = 0;
+    boolean runOnce = false;
     private DatabaseReference teamRef;
     private GeneralMethods gms;
     public TeamListAdapter(Context context, int resourceId,
@@ -103,7 +106,6 @@ public class TeamListAdapter extends ArrayAdapter<TeamList> {
         else {
             Picasso.get().load(rowItem.getImageId()).into(holder.imageView);
         }
-
         View finalConvertView = convertView;
         holder.addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -124,6 +126,7 @@ public class TeamListAdapter extends ArrayAdapter<TeamList> {
                                 jsonObj.put("imageURL",jsonObject.getString("imageURL"));
                                 jsonObj.put("playingRole", jsonObject.getString("playingRole"));
                                 jsonObj.put("value", jsonObject.getString("value"));
+
                                 boolean canBeAdded = false;
                                 if(jsonObject.getString("playingRole").equals("Wicket Keeper")) {
                                     wktKeeperLength++;
@@ -278,49 +281,13 @@ public class TeamListAdapter extends ArrayAdapter<TeamList> {
                 }
             }
         });
-        if(!rowItem.isPlayerAdded() && playerCount <= 11) {
-            teamRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                String value = snapshot.getValue(String.class);
-                if(value != null) {
-                    try {
-                        JSONArray jsonArray = new JSONArray(value);
-                        int indexOfArr = gms.findInJSONArray(jsonArray, rowItem.getTitle());
-                        if(indexOfArr != -1 && oldPos != getPosition(rowItem)) {
-                            JSONObject jsonObject = jsonArray.getJSONObject(indexOfArr);
-                            JSONObject jsonObj = new JSONObject();
-                            jsonObj.put("pid",jsonObject.getInt("pid"));
-                            jsonObj.put("name",jsonObject.getString("name"));
-                            jsonObj.put("imageURL",jsonObject.getString("imageURL"));
-                            jsonObj.put("playingRole", jsonObject.getString("playingRole"));
-                            jsonObj.put("value", jsonObject.getString("value"));
-                            playerData.add(rowItem.getTitle());
-                            team.put(jsonObj);
-                            budget = budget - jsonObject.getInt("value");
-                            mOnBudgetChangeListener.onBudgetChanged(budget);
-                            oldPos = getPosition(rowItem);
-                            SM.sendData(team.toString());
-                            rowItems.get(getPosition(rowItem)).togglePlayerStatus();
-                            notifyDataSetChanged();
-                            playerCount++;
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
+        if(!runOnce) {
+            notifyDataSetChanged();
+            runOnce = true;
         }
 
-
         holder.addBtn.setTag(position);
-
         ImageView btn = (ImageView) finalConvertView.findViewById(R.id.addBtn);
         if(rowItems.get(position).isPlayerAdded()) {
             btn.setImageResource(R.drawable.remove);
@@ -329,6 +296,63 @@ public class TeamListAdapter extends ArrayAdapter<TeamList> {
             btn.setImageResource(R.drawable.add);
         }
         return convertView;
+    }
+
+    @Override
+    public void notifyDataSetChanged() {
+        super.notifyDataSetChanged();
+        for (int i = 0; i < rowItems.size(); i++) {
+            TeamList rowItem = rowItems.get(i);
+            teamRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    String value = snapshot.getValue(String.class);
+                    if(value != null) {
+                        if(!playerData.contains(rowItem.getTitle()) && playerCount <= 11) {
+                            try {
+                                JSONArray jsonArray = new JSONArray(value);
+                                int indexOfArr = gms.findInJSONArray(jsonArray, rowItem.getTitle());
+                                if(indexOfArr != -1 && oldPos != getPosition(rowItem) && !playerData.contains(rowItem.getTitle())) {
+                                    JSONObject jsonObject = jsonArray.getJSONObject(indexOfArr);
+                                    JSONObject jsonObj = new JSONObject();
+                                    jsonObj.put("pid",jsonObject.getInt("pid"));
+                                    jsonObj.put("name",jsonObject.getString("name"));
+                                    jsonObj.put("imageURL",jsonObject.getString("imageURL"));
+                                    jsonObj.put("playingRole", jsonObject.getString("playingRole"));
+                                    jsonObj.put("value", jsonObject.getString("value"));
+                                    if(jsonObject.has("captain")) {
+                                        jsonObj.put("captain", jsonObject.getBoolean("captain"));
+                                    }
+                                    playerData.add(rowItem.getTitle());
+                                    team.put(jsonObj);
+                                    budget = budget - jsonObject.getInt("value");
+                                    mOnBudgetChangeListener.onBudgetChanged(budget);
+                                    oldPos = getPosition(rowItem);
+                                    SM.sendData(team.toString());
+                                    if(!rowItem.isPlayerAdded()) {
+                                        rowItems.get(getPosition(rowItem)).togglePlayerStatus();
+                                        notifyDataSetChanged();
+                                    }
+                                    playerCount++;
+                                    totalLength++;
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+            if(playerData.contains(rowItem.getTitle()) && !rowItem.isPlayerAdded()) {
+                rowItems.get(getPosition(rowItem)).togglePlayerStatus();
+                notifyDataSetChanged();
+            }
+        }
     }
 
     public interface OnBudgetChangeListener{

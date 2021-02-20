@@ -28,4 +28,12 @@
         android:name="com.zayditech.cricerzfantasy.ui.yourTeam.YourTeamFragment"
         android:label="My Team"
         tools:layout="@layout/fragment_yourteam" />
+
+    <fragment
+        android:id="@+id/nav_prizes"
+        android:name="com.zayditech.cricerzfantasy.ui.prizes.PrizesFragment"
+        android:label="Prizes"
+        tools:layout="@layout/fragment_yourteam" />
+
+
 </navigation>

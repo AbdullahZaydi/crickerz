@@ -21,5 +21,10 @@
             android:id="@+id/nav_yourTeam"
             android:icon="@drawable/player"
             android:title="My Team" />
+
+        <item
+            android:id="@+id/nav_prizes"
+            android:icon="@drawable/trophy"
+            android:title="Prizes" />
     </group>
 </menu>

@@ -39,6 +39,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -66,10 +67,8 @@ public class HomeFragment extends Fragment {
         Teams = database.getReference("Teams");
         rowItems = new ArrayList<RowItem>();
         GeneralMethods gms = new GeneralMethods(getContext());
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            if(FirebaseAuth.getInstance().getCurrentUser() != null) {
-                CreatedTeamRef = database.getReference(gms.encodeIntoBase64(FirebaseAuth.getInstance().getCurrentUser().getEmail()));
-            }
+        if(FirebaseAuth.getInstance().getCurrentUser() != null) {
+            CreatedTeamRef = database.getReference(gms.encodeIntoBase64(FirebaseAuth.getInstance().getCurrentUser().getEmail()));
         }
         MaterialCardView card = root.findViewById(R.id.createTeamCard);
         card.setOnClickListener(new View.OnClickListener() {
@@ -174,15 +173,15 @@ public class HomeFragment extends Fragment {
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     // This method is called once with the initial value and again
                     // whenever data at this location is updated.
-                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                        String encoded = gms.encodeIntoBase64(FirebaseAuth.getInstance().getCurrentUser().getEmail());
-                    }
+                    String encoded = gms.encodeIntoBase64(FirebaseAuth.getInstance().getCurrentUser().getEmail());
                     String value = dataSnapshot.getValue(String.class);
-                    if(!(value == null)) {
+                    if(value != null) {
                         TextView createText = container.findViewById(R.id.createText);
-                        createText.setText("Change Team");
-                        TextView supportingText = container.findViewById(R.id.supportingText);
-                        supportingText.setText("Modify Your Team\nYou can modify your team\nAs much as you can\nUntil new psl has started");
+                        if(createText != null) {
+                            createText.setText("Change Team");
+                            TextView supportingText = container.findViewById(R.id.supportingText);
+                            supportingText.setText("Modify Your Team\nYou can modify your team\nAs much as you can\nUntil new psl has started");
+                        }
                     }
                 }
 

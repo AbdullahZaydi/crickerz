@@ -1,6 +1,7 @@
 package com.zayditech.cricerzfantasy;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -31,6 +32,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class Tab1Fragment extends Fragment {
 
     private FirebaseDatabase database;
@@ -39,15 +42,17 @@ public class Tab1Fragment extends Fragment {
     onTabChangeClickListener TabChangedListener;
     ListView listView;
     List<TeamList> rowItems;
+    TeamListAdapter adapter;
     JSONArray playersArray;
+    String teamToShow = "All";
+    String teamName = "";
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         database = FirebaseDatabase.getInstance();
         PlayersStatsRef = database.getReference("PlayersStats");
+        System.out.println(teamToShow);
         rowItems = new ArrayList<TeamList>();
         playersArray = new JSONArray();
-        Bundle bundle = getArguments();
-        String teamToShow = bundle.getString("TeamToShow", "All");
         PlayersStatsRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -75,7 +80,7 @@ public class Tab1Fragment extends Fragment {
                     e.printStackTrace();
                 }
                 listView = (ListView) container.findViewById(R.id.list);
-                TeamListAdapter adapter = new TeamListAdapter(getActivity().getApplicationContext(),
+                adapter = new TeamListAdapter(getActivity().getApplicationContext(),
                         R.layout.list_item_2, rowItems, value, SM);
                 listView.setAdapter(adapter);
                 adapter.setOnBudgetChangeListener(budget -> {
@@ -95,6 +100,270 @@ public class Tab1Fragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        CircleImageView kk_image = view.findViewById(R.id.ic_kk);
+        CircleImageView lq_image = view.findViewById(R.id.ic_lq);
+        CircleImageView pz_image = view.findViewById(R.id.ic_pz);
+        CircleImageView ms_image = view.findViewById(R.id.ic_ms);
+        CircleImageView iu_image = view.findViewById(R.id.ic_iu);
+        CircleImageView qg_image = view.findViewById(R.id.ic_qg);
+//
+        kk_image.setOnClickListener(v -> {
+            teamToShow = "KK";
+            if(teamName.equals(teamToShow)) {
+                return;
+            }
+            teamName = teamToShow;
+            rowItems.clear();
+            PlayersStatsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    String value = dataSnapshot.getValue(String.class);
+                    try {
+                        JSONArray jsonArray = new JSONArray(value);
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject jsonObject = jsonArray.getJSONObject(i);
+                            if(teamToShow.equals("All")) {
+                                TeamList item = new TeamList(jsonObject.getString("imageURL"),
+                                        jsonObject.getString("name"),
+                                        jsonObject.getString("playingRole"), jsonObject.getInt("value"), false);
+                                rowItems.add(item);
+                            }
+                            else {
+                                if(jsonObject.getString("team").equals(teamToShow)) {
+                                    TeamList item = new TeamList(jsonObject.getString("imageURL"),
+                                            jsonObject.getString("name"),
+                                            jsonObject.getString("playingRole"), jsonObject.getInt("value"), false);
+                                    rowItems.add(item);
+                                }
+                            }
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    adapter.notifyDataSetChanged();
+                }
+
+                @Override
+                public void onCancelled(DatabaseError error) {
+                    // Failed to read value
+                }
+            });
+        });
+
+        lq_image.setOnClickListener(v -> {
+            teamToShow = "LQ";
+            if(teamName.equals(teamToShow)) {
+                return;
+            }
+            teamName = teamToShow;
+            rowItems.clear();
+            PlayersStatsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    String value = dataSnapshot.getValue(String.class);
+                    try {
+                        JSONArray jsonArray = new JSONArray(value);
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject jsonObject = jsonArray.getJSONObject(i);
+                            if(teamToShow.equals("All")) {
+                                TeamList item = new TeamList(jsonObject.getString("imageURL"),
+                                        jsonObject.getString("name"),
+                                        jsonObject.getString("playingRole"), jsonObject.getInt("value"), false);
+                                rowItems.add(item);
+                            }
+                            else {
+                                if(jsonObject.getString("team").equals(teamToShow)) {
+                                    TeamList item = new TeamList(jsonObject.getString("imageURL"),
+                                            jsonObject.getString("name"),
+                                            jsonObject.getString("playingRole"), jsonObject.getInt("value"), false);
+                                    rowItems.add(item);
+                                }
+                            }
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    adapter.notifyDataSetChanged();
+                }
+
+                @Override
+                public void onCancelled(DatabaseError error) {
+                    // Failed to read value
+                }
+            });
+        });
+
+        pz_image.setOnClickListener(v -> {
+            teamToShow = "PZ";
+            if(teamName.equals(teamToShow)) {
+                return;
+            }
+            teamName = teamToShow;
+            rowItems.clear();
+            PlayersStatsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    String value = dataSnapshot.getValue(String.class);
+                    try {
+                        JSONArray jsonArray = new JSONArray(value);
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject jsonObject = jsonArray.getJSONObject(i);
+                            if(teamToShow.equals("All")) {
+                                TeamList item = new TeamList(jsonObject.getString("imageURL"),
+                                        jsonObject.getString("name"),
+                                        jsonObject.getString("playingRole"), jsonObject.getInt("value"), false);
+                                rowItems.add(item);
+                            }
+                            else {
+                                if(jsonObject.getString("team").equals(teamToShow)) {
+                                    TeamList item = new TeamList(jsonObject.getString("imageURL"),
+                                            jsonObject.getString("name"),
+                                            jsonObject.getString("playingRole"), jsonObject.getInt("value"), false);
+                                    rowItems.add(item);
+                                }
+                            }
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    adapter.notifyDataSetChanged();
+                }
+
+                @Override
+                public void onCancelled(DatabaseError error) {
+                    // Failed to read value
+                }
+            });
+        });
+
+        ms_image.setOnClickListener(v -> {
+            teamToShow = "MS";
+            if(teamName.equals(teamToShow)) {
+                return;
+            }
+            teamName = teamToShow;
+            rowItems.clear();
+            PlayersStatsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    String value = dataSnapshot.getValue(String.class);
+                    try {
+                        JSONArray jsonArray = new JSONArray(value);
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject jsonObject = jsonArray.getJSONObject(i);
+                            if(teamToShow.equals("All")) {
+                                TeamList item = new TeamList(jsonObject.getString("imageURL"),
+                                        jsonObject.getString("name"),
+                                        jsonObject.getString("playingRole"), jsonObject.getInt("value"), false);
+                                rowItems.add(item);
+                            }
+                            else {
+                                if(jsonObject.getString("team").equals(teamToShow)) {
+                                    TeamList item = new TeamList(jsonObject.getString("imageURL"),
+                                            jsonObject.getString("name"),
+                                            jsonObject.getString("playingRole"), jsonObject.getInt("value"), false);
+                                    rowItems.add(item);
+                                }
+                            }
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    adapter.notifyDataSetChanged();
+                }
+
+                @Override
+                public void onCancelled(DatabaseError error) {
+                    // Failed to read value
+                }
+            });
+        });
+
+        iu_image.setOnClickListener(v -> {
+            teamToShow = "IU";
+            if(teamName.equals(teamToShow)) {
+                return;
+            }
+            teamName = teamToShow;
+            rowItems.clear();
+            PlayersStatsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    String value = dataSnapshot.getValue(String.class);
+                    try {
+                        JSONArray jsonArray = new JSONArray(value);
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject jsonObject = jsonArray.getJSONObject(i);
+                            if(teamToShow.equals("All")) {
+                                TeamList item = new TeamList(jsonObject.getString("imageURL"),
+                                        jsonObject.getString("name"),
+                                        jsonObject.getString("playingRole"), jsonObject.getInt("value"), false);
+                                rowItems.add(item);
+                            }
+                            else {
+                                if(jsonObject.getString("team").equals(teamToShow)) {
+                                    TeamList item = new TeamList(jsonObject.getString("imageURL"),
+                                            jsonObject.getString("name"),
+                                            jsonObject.getString("playingRole"), jsonObject.getInt("value"), false);
+                                    rowItems.add(item);
+                                }
+                            }
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    adapter.notifyDataSetChanged();
+                }
+
+                @Override
+                public void onCancelled(DatabaseError error) {
+                    // Failed to read value
+                }
+            });
+        });
+
+        qg_image.setOnClickListener(v -> {
+            teamToShow = "QG";
+            if(teamName.equals(teamToShow)) {
+                return;
+            }
+            teamName = teamToShow;
+            rowItems.clear();
+            PlayersStatsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    String value = dataSnapshot.getValue(String.class);
+                    try {
+                        JSONArray jsonArray = new JSONArray(value);
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject jsonObject = jsonArray.getJSONObject(i);
+                            if(teamToShow.equals("All")) {
+                                TeamList item = new TeamList(jsonObject.getString("imageURL"),
+                                        jsonObject.getString("name"),
+                                        jsonObject.getString("playingRole"), jsonObject.getInt("value"), false);
+                                rowItems.add(item);
+                            }
+                            else {
+                                if(jsonObject.getString("team").equals(teamToShow)) {
+                                    TeamList item = new TeamList(jsonObject.getString("imageURL"),
+                                            jsonObject.getString("name"),
+                                            jsonObject.getString("playingRole"), jsonObject.getInt("value"), false);
+                                    rowItems.add(item);
+                                }
+                            }
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    adapter.notifyDataSetChanged();
+                }
+
+                @Override
+                public void onCancelled(DatabaseError error) {
+                    // Failed to read value
+                }
+            });
+        });
         Button nextBtn = view.findViewById(R.id.nextBtn);
         nextBtn.setOnClickListener(v -> TabChangedListener.changeTab(true));
     }
@@ -118,5 +387,4 @@ public class Tab1Fragment extends Fragment {
     interface onTabChangeClickListener {
         void changeTab(boolean shouldTabChange);
     }
-
 }

@@ -4,13 +4,15 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.util.Base64;
 
 import androidx.annotation.RequiresApi;
 
 import com.google.firebase.database.DatabaseReference;
 
+import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
-import java.util.Base64;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -83,18 +85,16 @@ public class GeneralMethods {
         }
         return tempArray;
     }
-    @RequiresApi(api = Build.VERSION_CODES.O)
     public String encodeIntoBase64(String dataToEncode) {
         final byte[] authBytes = dataToEncode.getBytes(StandardCharsets.UTF_8);
-        final String encoded = Base64.getEncoder().encodeToString(authBytes);
+        final String  encoded = android.util.Base64.encodeToString(authBytes, Base64.NO_WRAP);
         return  encoded;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    String decodeData(String dataToDecode) {
-        // Decoding string
-        String dStr = new String(Base64.getDecoder().decode(dataToDecode));
-        return dStr;
+    public String decodeData(String dataToDecode) throws UnsupportedEncodingException {
+        byte[] dStr = android.util.Base64.decode(dataToDecode, Base64.NO_WRAP);
+        String dataString = new String(dStr, "UTF-8");
+        return dataString;
     }
 
     JSONArray updateJsonArray(JSONArray jsonArray, JSONObject updatedObject) throws JSONException {

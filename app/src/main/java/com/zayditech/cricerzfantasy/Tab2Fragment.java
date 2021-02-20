@@ -2,6 +2,7 @@ package com.zayditech.cricerzfantasy;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,7 +15,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Lifecycle;
 
-import com.example.tastytoast.TastyToast;
 import com.google.android.material.card.MaterialCardView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -23,6 +23,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.sdsmdg.tastytoast.TastyToast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -32,12 +33,15 @@ import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.content.Context.MODE_PRIVATE;
+
 public class Tab2Fragment extends Fragment {
 
     private FirebaseDatabase database;
     private DatabaseReference teamRef;
     private FirebaseUser mFireBaseUser;
     private String JSONStr;
+    private String jsonData = "";
     private boolean captainSelected = false;
     View _view;
     GeneralMethods gms;
@@ -54,9 +58,7 @@ public class Tab2Fragment extends Fragment {
         _view = view;
         gms= new GeneralMethods(getActivity().getApplicationContext());
         mFireBaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            teamRef = database.getReference(gms.encodeIntoBase64(mFireBaseUser.getEmail()));
-        }
+        teamRef = database.getReference(gms.encodeIntoBase64(mFireBaseUser.getEmail()));
         btnCard = view.findViewById(R.id.createTeamBtn);
     }
 
@@ -78,25 +80,33 @@ public class Tab2Fragment extends Fragment {
             }
             btnCard.setOnClickListener(v -> {
                 if(jsonArray.length() >= 10) {
-                    teamRef.setValue(message);
-                    TastyToast.success(getActivity().getApplicationContext(),"Your Team has been created!",
-                            TastyToast.LENGTH_SHORT,
-                            TastyToast.SHAPE_RECTANGLE,
-                            false);
-                    startActivity(new Intent(getContext(), HomeActivity.class));
+                    if(!jsonData.equals("")) {
+                        teamRef.setValue(jsonData);
+                        TastyToast.makeText(getActivity().getApplicationContext(),"Your Team has been created!",
+                                TastyToast.LENGTH_SHORT,
+                                TastyToast.SUCCESS);
+                        startActivity(new Intent(getContext(), HomeActivity.class));
+                    }
+                    else {
+                        TastyToast.makeText(getActivity().getApplicationContext(),"Please select captain!",
+                                TastyToast.LENGTH_SHORT,
+                                TastyToast.ERROR);
+                    }
                 }
                 else {
-                    TastyToast.error(getActivity().getApplicationContext(),"Please select 11 players first!",
+                    TastyToast.makeText(getActivity().getApplicationContext(),"Please select 11 players first!",
                             TastyToast.LENGTH_SHORT,
-                            TastyToast.SHAPE_RECTANGLE,
-                            false);
+                            TastyToast.INFO);
                 }
             });
         } catch (JSONException e) {
             e.printStackTrace();
         }
         CreateTeamAdapter adapter = new CreateTeamAdapter(getActivity().getApplicationContext(),
-                R.layout.list_item_4, rowItems, message);
+                R.layout.list_item_4, rowItems, message, this);
         listView.setAdapter(adapter);
+    }
+    public void setTeamJSON(String JSONData){
+        this.jsonData = JSONData;
     }
 }
