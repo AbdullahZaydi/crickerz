@@ -111,7 +111,7 @@ public class GeneralMethods {
         return tempArray;
     }
 
-    int findInJSONArray(JSONArray jsonArray, String Title) throws JSONException {
+    public int findInJSONArray(JSONArray jsonArray, String Title) throws JSONException {
         for (int i = 0; i < jsonArray.length(); i++) {
             JSONObject jsonObject = jsonArray.getJSONObject(i);
             if(jsonObject.getString("name").equals(Title)) {
@@ -121,7 +121,7 @@ public class GeneralMethods {
         return -1;
     }
 
-    JSONArray compareAndAddToArray(JSONArray jsonArray, JSONArray arr) throws JSONException {
+    public JSONArray compareAndAddToArray(JSONArray jsonArray, JSONArray arr) throws JSONException {
         JSONArray tempArr = new JSONArray();
         for (int i = 0; i < arr.length(); i++) {
             JSONObject comparingObj = arr.getJSONObject(i);

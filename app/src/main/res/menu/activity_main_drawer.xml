@@ -26,5 +26,10 @@
             android:id="@+id/nav_prizes"
             android:icon="@drawable/trophy"
             android:title="Prizes" />
+
+        <item
+            android:id="@+id/nav_leaderboard"
+            android:icon="@drawable/leaderboard"
+            android:title="Leaderboard" />
     </group>
 </menu>

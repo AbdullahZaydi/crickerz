@@ -42,8 +42,11 @@ public class Tab2Fragment extends Fragment {
     private FirebaseUser mFireBaseUser;
     private String JSONStr;
     private String jsonData = "";
+    JSONArray jsonArr;
+    boolean notFound = false;
     private boolean captainSelected = false;
     View _view;
+    int transfer;
     GeneralMethods gms;
     MaterialCardView btnCard;
     @Override
@@ -75,17 +78,76 @@ public class Tab2Fragment extends Fragment {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
                 PlayerList item = new PlayerList(jsonObject.getString("imageURL"),
                         jsonObject.getString("name"),
-                        jsonObject.getString("playingRole"), jsonObject.getInt("value"));
+                         jsonObject.getString("playingRole"), jsonObject.getInt("value"));
                 rowItems.add(item);
             }
             btnCard.setOnClickListener(v -> {
                 if(jsonArray.length() >= 10) {
                     if(!jsonData.equals("")) {
-                        teamRef.setValue(jsonData);
-                        TastyToast.makeText(getActivity().getApplicationContext(),"Your Team has been created!",
-                                TastyToast.LENGTH_SHORT,
-                                TastyToast.SUCCESS);
-                        startActivity(new Intent(getContext(), HomeActivity.class));
+                        try {
+                            jsonArr = new JSONArray(jsonData);
+                            teamRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    try {
+                                        JSONArray oldJsonArray = new JSONArray(snapshot.getValue(String.class));
+                                        for (int i = 0; i < oldJsonArray.length(); i++) {
+                                            JSONObject oldJsonObjects = oldJsonArray.getJSONObject(i);
+                                            JSONObject transfers = new JSONObject();
+                                            if(!oldJsonObjects.has("transfers")) {
+                                                notFound= true;
+                                            }
+                                            else {
+                                                transfer = oldJsonObjects.getInt("transfers");
+                                                notFound = false;
+                                            }
+                                        }
+
+                                        JSONObject transfers = new JSONObject();
+                                        if(notFound) {
+                                            transfers.put("transfers", 90);
+                                            jsonArr.put(transfers);
+                                            teamRef.setValue(jsonArr.toString());
+                                            TastyToast.makeText(getActivity().getApplicationContext(),"Your Team has been created!",
+                                                    TastyToast.LENGTH_SHORT,
+                                                    TastyToast.SUCCESS);
+                                            startActivity(new Intent(getContext(), HomeActivity.class));
+                                            getActivity().finish();
+                                        }
+                                        else {
+                                            if(transfer > 90) {
+                                                TastyToast.makeText(getActivity().getApplicationContext(),
+                                                        "You've reached your maximum transfer limit. You can not change team now!",
+                                                        TastyToast.LENGTH_SHORT, TastyToast.ERROR).show();
+                                                startActivity(new Intent(getContext(), HomeActivity.class));
+                                                getActivity().finish();
+                                            }
+                                            else {
+                                                transfer--;
+                                                transfers.put("transfers", transfer);
+                                                jsonArr.put(transfers);
+                                                teamRef.setValue(jsonArr.toString());
+                                                TastyToast.makeText(getActivity().getApplicationContext(),"Your Team has been created!",
+                                                        TastyToast.LENGTH_SHORT,
+                                                        TastyToast.SUCCESS);
+                                                startActivity(new Intent(getContext(), HomeActivity.class));
+                                                getActivity().finish();
+                                            }
+                                        }
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+
+                                }
+                            });
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
                     else {
                         TastyToast.makeText(getActivity().getApplicationContext(),"Please select captain!",

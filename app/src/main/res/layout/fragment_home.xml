@@ -43,7 +43,8 @@
             android:orientation="vertical">
 
             <com.google.android.material.card.MaterialCardView
-                android:id="@+id/timerCard"
+                android:id="@+id/pointCalculatorCard"
+                android:visibility="gone"
                 android:layout_width="315dp"
                 android:layout_height="143dp"
                 android:layout_margin="8dp"
@@ -61,49 +62,52 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
-                    <cn.iwgang.countdownview.CountdownView
-                        android:id="@+id/mycountdown"
-                        android:layout_width="295dp"
-                        android:layout_height="71dp"
-                        android:layout_marginTop="9dp"
-                        android:elevation="8dp"
-                        app:isHideTimeBackground="false"
-                        app:isShowDay="true"
-                        app:isShowHour="true"
-                        app:isShowMillisecond="false"
-                        app:isShowMinute="true"
-                        app:isShowSecond="true"
-                        app:isTimeTextBold="true"
+                    <ImageView
+                        android:id="@+id/imageView4"
+                        android:layout_width="103dp"
+                        android:layout_height="118dp"
+                        android:src="@drawable/calculator"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.075"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0.111"
-                        app:suffixDay="dd"
-                        app:suffixGravity="bottom"
-                        app:suffixHour="hh"
-                        app:suffixMillisecond="ms"
-                        app:suffixMinute="mm"
-                        app:suffixSecond="ss"
-                        app:suffixTextColor="#000000"
-                        app:suffixTextSize="12sp"
-                        app:timeBgColor="#B989ED4C"
-                        app:timeTextColor="#FFFFFF"
-                        app:timeTextSize="32sp" />
+                        app:layout_constraintVertical_bias="0.36" />
+
+                    <TextView
+                        android:id="@+id/supportingText2"
+                        android:layout_width="164dp"
+                        android:layout_height="41dp"
+                        android:fontFamily="sans-serif-medium"
+                        android:text="Calculate Player Points.\nBased On Each Match.\nCalculate Each Player's point."
+                        android:textAlignment="textEnd"
+                        android:textAllCaps="true"
+                        android:textColor="#629B1A"
+                        android:textSize="10sp"
+                        android:textStyle="italic"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="1.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.705" />
 
                     <TextView
                         android:id="@+id/textView2"
-                        android:layout_width="317dp"
-                        android:layout_height="39dp"
-                        android:text="Note: We Will Start deducting Transfers from your account after first PSL Match Starts."
-                        android:textAlignment="center"
-                        android:textAllCaps="false"
-                        android:textColor="#252525"
+                        android:layout_width="187dp"
+                        android:layout_height="24dp"
+                        android:text="Calculate Points"
+                        android:textAlignment="viewEnd"
+                        android:textAllCaps="true"
+                        android:textColor="#004012"
+                        android:textColorLink="#004012"
+                        android:textSize="20sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="1.0"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="1.0" />
+                        app:layout_constraintVertical_bias="0.238" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </com.google.android.material.card.MaterialCardView><com.google.android.material.card.MaterialCardView
                 android:id="@+id/createTeamCard"

@@ -9,10 +9,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.CricerzFantasy">
+        <activity android:name=".Leaderboard"></activity>
+        <activity
+            android:name=".PlayersActivity"
+            android:label="Add Points" />
+        <activity
+            android:name=".PointCalculator"
+            android:label="Select Match" />
         <activity
             android:name=".CreateTeamActivity"
-            android:screenOrientation="portrait">
-        </activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".HomeActivity"
             android:label="@string/title_activity_home"

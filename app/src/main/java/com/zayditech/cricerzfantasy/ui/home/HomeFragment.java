@@ -1,6 +1,7 @@
 package com.zayditech.cricerzfantasy.ui.home;
 
 import android.content.Intent;
+import android.graphics.Point;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -30,6 +31,7 @@ import com.zayditech.cricerzfantasy.CreateTeamActivity;
 import com.zayditech.cricerzfantasy.CustomListViewAdapter;
 import com.zayditech.cricerzfantasy.GeneralMethods;
 import com.zayditech.cricerzfantasy.MainActivity;
+import com.zayditech.cricerzfantasy.PointCalculator;
 import com.zayditech.cricerzfantasy.R;
 import com.zayditech.cricerzfantasy.RowItem;
 import com.zayditech.cricerzfantasy.SliderAdapter;
@@ -69,7 +71,19 @@ public class HomeFragment extends Fragment {
         GeneralMethods gms = new GeneralMethods(getContext());
         if(FirebaseAuth.getInstance().getCurrentUser() != null) {
             CreatedTeamRef = database.getReference(gms.encodeIntoBase64(FirebaseAuth.getInstance().getCurrentUser().getEmail()));
+
+            if(FirebaseAuth.getInstance().getCurrentUser().getEmail().equals("crickerzpsl@gmail.com")) {
+                MaterialCardView pointCard = root.findViewById(R.id.pointCalculatorCard);
+                pointCard.setVisibility(View.VISIBLE);
+                pointCard.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        startActivity(new Intent(getActivity().getApplicationContext(), PointCalculator.class));
+                    }
+                });
+            }
         }
+
         MaterialCardView card = root.findViewById(R.id.createTeamCard);
         card.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -191,24 +205,24 @@ public class HomeFragment extends Fragment {
                 }
             });
         }
-        CountdownView mCvCountdownView = root.findViewById(R.id.mycountdown);
-
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-        String countDate = "20-02-2021 14:00:00";
-        Date now = new Date();
-
-
-        try {
-            //Formatting from String to Date
-            Date date = sdf.parse(countDate);
-            long currentTime = now.getTime();
-            long newYearDate = date.getTime();
-            long countDownToNewYear = newYearDate - currentTime;
-            mCvCountdownView.start(countDownToNewYear);
-
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+//        CountdownView mCvCountdownView = root.findViewById(R.id.mycountdown);
+//
+//        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+//        String countDate = "20-02-2021 14:00:00";
+//        Date now = new Date();
+//
+//
+//        try {
+//            //Formatting from String to Date
+//            Date date = sdf.parse(countDate);
+//            long currentTime = now.getTime();
+//            long newYearDate = date.getTime();
+//            long countDownToNewYear = newYearDate - currentTime;
+//            mCvCountdownView.start(countDownToNewYear);
+//
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
         return root;
     }
 }

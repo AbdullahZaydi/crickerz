@@ -1,0 +1,56 @@
+{
+  "project_info": {
+    "project_number": "994536756922",
+    "firebase_url": "https://crickerz-3aaf7-default-rtdb.firebaseio.com",
+    "project_id": "crickerz-3aaf7",
+    "storage_bucket": "crickerz-3aaf7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:994536756922:android:ed97a13a63564ee8149483",
+        "android_client_info": {
+          "package_name": "com.zayditech.cricerzfantasy"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "994536756922-cku97bqvcanhk97jupr2caaakb2ei0o6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.zayditech.cricerzfantasy",
+            "certificate_hash": "91e6782bcc8409076a0e6b6b5c07ffb7e6baf03a"
+          }
+        },
+        {
+          "client_id": "994536756922-ivm6gnbst2q0rthoum6d4ag2vumt9sl2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.zayditech.cricerzfantasy",
+            "certificate_hash": "cfa14221163037bf97997ede325a367c93e9e044"
+          }
+        },
+        {
+          "client_id": "994536756922-o848cu6djvgskerl65ac9sal44tks658.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDpY9va07f7mZzXrmFr78S0JHLo-xB_Zy8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "994536756922-o848cu6djvgskerl65ac9sal44tks658.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
